@@ -1,0 +1,17 @@
+# Prerequisites
+*.d
+
+# Object files
+*.o
+*.elf
+
+# Libraries
+*.a
+
+# Shared objects (inc. Windows DLLs)
+*.so
+*.so.*
+
+# Executables
+*.out
+*.hex
