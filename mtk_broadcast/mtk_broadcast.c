@@ -2,7 +2,7 @@
  * MIT License
  *
  * Copyright (c) 2023 LumenRadio AB
- * 
+ *
  * SPDX-License-Identifier: MIT
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -30,18 +30,16 @@
 #include "mtk_broadcast_worker.h"
 
 #ifndef MTK_BROADCAST_NUM_UNIQUE_BROADCASTS
-#define MTK_BROADCAST_NUM_CTX    4
+#define MTK_BROADCAST_NUM_CTX 4
 #else
 #define MTK_BROADCAST_NUM_CTX MTK_BROADCAST_NUM_UNIQUE_BROADCASTS
 #endif
 
-static mtk_int_broadcast_worker_t broadcast_ctx[
-    MTK_BROADCAST_NUM_CTX];
+static mtk_int_broadcast_worker_t broadcast_ctx[MTK_BROADCAST_NUM_CTX];
 static int broadcast_num_ctx = 0;
 
-mtk_broadcast_status_t mtk_broadcast_init(
-    mira_net_address_t *broadcast_addr,
-    uint16_t broadcast_udp_port)
+mtk_broadcast_status_t mtk_broadcast_init(mira_net_address_t* broadcast_addr,
+                                          uint16_t broadcast_udp_port)
 {
     if (mtk_int_broadcast_worker_init_net(broadcast_addr, broadcast_udp_port) != 0) {
         return MTK_BROADCAST_ERROR_INTERNAL;
@@ -50,14 +48,13 @@ mtk_broadcast_status_t mtk_broadcast_init(
     }
 }
 
-mtk_broadcast_status_t mtk_broadcast_register(
-    uint32_t data_id,
-    void *data,
-    mira_size_t size,
-    mtk_broadcast_callback_t update_handler,
-    void *storage)
+mtk_broadcast_status_t mtk_broadcast_register(uint32_t data_id,
+                                              void* data,
+                                              mira_size_t size,
+                                              mtk_broadcast_callback_t update_handler,
+                                              void* storage)
 {
-    mtk_int_broadcast_worker_t *ctx;
+    mtk_int_broadcast_worker_t* ctx;
     if (broadcast_num_ctx >= MTK_BROADCAST_NUM_CTX) {
         return MTK_BROADCAST_ERROR_NO_MEMORY;
     }
@@ -65,14 +62,9 @@ mtk_broadcast_status_t mtk_broadcast_register(
     ctx = &broadcast_ctx[broadcast_num_ctx];
     broadcast_num_ctx++;
 
-    int status = mtk_int_broadcast_worker_register(
-        ctx,
-        data_id,
-        data,
-        size,
-        update_handler,
-        storage);
-    
+    int status =
+      mtk_int_broadcast_worker_register(ctx, data_id, data, size, update_handler, storage);
+
     if (status != 0) {
         return MTK_BROADCAST_ERROR_INTERNAL;
     } else {
@@ -80,13 +72,10 @@ mtk_broadcast_status_t mtk_broadcast_register(
     }
 }
 
-int mtk_broadcast_update(
-    uint32_t data_id,
-    void *data,
-    mira_size_t size)
+int mtk_broadcast_update(uint32_t data_id, void* data, mira_size_t size)
 {
     int i;
-    mtk_int_broadcast_worker_t *ctx;
+    mtk_int_broadcast_worker_t* ctx;
 
     for (i = 0; i < broadcast_num_ctx; i++) {
         ctx = &broadcast_ctx[i];
@@ -103,11 +92,10 @@ int mtk_broadcast_update(
     return MTK_BROADCAST_ERROR_NOT_INITIALIZED;
 }
 
-int mtk_broadcast_pause(
-    uint32_t data_id)
+int mtk_broadcast_pause(uint32_t data_id)
 {
     int i;
-    mtk_int_broadcast_worker_t *ctx;
+    mtk_int_broadcast_worker_t* ctx;
 
     for (i = 0; i < broadcast_num_ctx; i++) {
         ctx = &broadcast_ctx[i];
@@ -124,11 +112,10 @@ int mtk_broadcast_pause(
     return MTK_BROADCAST_ERROR_NOT_INITIALIZED;
 }
 
-int mtk_broadcast_resume(
-    uint32_t data_id)
+int mtk_broadcast_resume(uint32_t data_id)
 {
     int i;
-    mtk_int_broadcast_worker_t *ctx;
+    mtk_int_broadcast_worker_t* ctx;
 
     for (i = 0; i < broadcast_num_ctx; i++) {
         ctx = &broadcast_ctx[i];

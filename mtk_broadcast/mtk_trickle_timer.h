@@ -2,7 +2,7 @@
  * Copyright (c) 2023, LumenRadio AB
  * Copyright (c) 2012, George Oikonomou - <oikonomou@users.sourceforge.net>
  * All rights reserved.
- * 
+ *
  * SPDX-License-Identifier: BSD-3-Clause
  *
  * Redistribution and use in source and binary forms, with or without
@@ -87,33 +87,33 @@
 /**
  * \brief Set as value of k to disable suppression
  */
-#define MTK_TRICKLE_TIMER_INFINITE_REDUNDANCY  0x00
+#define MTK_TRICKLE_TIMER_INFINITE_REDUNDANCY 0x00
 
-#define MTK_TRICKLE_TIMER_ERROR                   0
-#define MTK_TRICKLE_TIMER_SUCCESS                 1
+#define MTK_TRICKLE_TIMER_ERROR 0
+#define MTK_TRICKLE_TIMER_SUCCESS 1
 
 /**
  * \brief Use as the value of TRICKLE_TIMER_MAX_IMAX_WIDTH to enable the
  * generic 'Find max Imax' routine
  */
-#define MTK_TRICKLE_TIMER_MAX_IMAX_GENERIC        0
+#define MTK_TRICKLE_TIMER_MAX_IMAX_GENERIC 0
 /**
  * \brief Use as the value of TRICKLE_TIMER_MAX_IMAX_WIDTH to enable the 16-bit
  * 'Find max Imax' routine
  */
-#define MTK_TRICKLE_TIMER_MAX_IMAX_16_BIT         1
+#define MTK_TRICKLE_TIMER_MAX_IMAX_16_BIT 1
 /**
  * \brief Use as the value of TRICKLE_TIMER_MAX_IMAX_WIDTH to enable the 32-bit
  * 'Find max Imax' routine
  */
-#define MTK_TRICKLE_TIMER_MAX_IMAX_32_BIT         2
+#define MTK_TRICKLE_TIMER_MAX_IMAX_32_BIT 2
 
 /**
  * \brief Constants used as values for the \e suppress param of
  * trickle_timer_cb_t
  */
-#define MTK_TRICKLE_TIMER_TX_SUPPRESS             0
-#define MTK_TRICKLE_TIMER_TX_OK                   1
+#define MTK_TRICKLE_TIMER_TX_SUPPRESS 0
+#define MTK_TRICKLE_TIMER_TX_OK 1
 
 /**
  * \brief A trickle timer is considered 'stopped' when
@@ -123,7 +123,7 @@
  * Do NOT set the value of i_cur to 0 directly, as this will fail to stop the
  * timer.
  */
-#define MTK_TRICKLE_TIMER_IS_STOPPED              0
+#define MTK_TRICKLE_TIMER_IS_STOPPED 0
 /** @} */
 
 /**
@@ -216,7 +216,7 @@
 /**
  * \brief cross-platform method to get the maximum clock_time_t value
  */
-#define MTK_TRICKLE_TIMER_CLOCK_MAX ((clock_time_t) ~0)
+#define MTK_TRICKLE_TIMER_CLOCK_MAX ((clock_time_t)~0)
 
 /**
  * \brief Checks if the trickle timer's suppression feature is enabled
@@ -226,8 +226,7 @@
  * \retval non-zero Suppression is enabled
  * \retval 0 Suppression is disabled
  */
-#define MTK_TRICKLE_TIMER_SUPPRESSION_ENABLED(tt) \
-    ((tt)->k != MTK_TRICKLE_TIMER_INFINITE_REDUNDANCY)
+#define MTK_TRICKLE_TIMER_SUPPRESSION_ENABLED(tt) ((tt)->k != MTK_TRICKLE_TIMER_INFINITE_REDUNDANCY)
 
 /**
  * \brief Checks if the trickle timer's suppression feature is disabled
@@ -291,8 +290,7 @@
  * \retval 1 The Imin value is valid
  * \retval 0 The Imin value is invalid
  */
-#define MTK_TRICKLE_TIMER_IMIN_IS_OK(imin) \
-    ((imin > 1) && (i_min <= (TRICKLE_TIMER_CLOCK_MAX >> 1)))
+#define MTK_TRICKLE_TIMER_IMIN_IS_OK(imin) ((imin > 1) && (i_min <= (TRICKLE_TIMER_CLOCK_MAX >> 1)))
 
 /**
  * \brief Checks whether an Imin value is invalid considering the various
@@ -346,9 +344,7 @@
  * The \e suppress argument is used so that the library can signal the protocol
  * whether it should TX or suppress
  */
-typedef void (*mtk_trickle_timer_cb_t)(
-    void *ptr,
-    uint8_t suppress);
+typedef void (*mtk_trickle_timer_cb_t)(void* ptr, uint8_t suppress);
 
 /**
  * \struct trickle_timer
@@ -364,23 +360,24 @@ typedef void (*mtk_trickle_timer_cb_t)(
  * Imax in such a way that the maximum interval size does not exceed the
  * boundaries of clock_time_t
  */
-struct mtk_trickle_timer {
-    clock_time_t i_min;   /**< Imin: Clock ticks */
-    clock_time_t i_cur;   /**< I: Current interval in clock_ticks */
-    clock_time_t i_start; /**< Start of this interval (absolute clock_time) */
-    clock_time_t i_max_abs; /**< Maximum interval size in clock ticks (and not in
-                               number of doublings). This is a cached value of
-                               Imin << Imax used internally, so that we can
-                               have direct access to the maximum interval size
-                               without having to calculate it all the time */
-    struct ctimer ct;     /**< A \ref ctimer used internally */
+struct mtk_trickle_timer
+{
+    clock_time_t i_min;        /**< Imin: Clock ticks */
+    clock_time_t i_cur;        /**< I: Current interval in clock_ticks */
+    clock_time_t i_start;      /**< Start of this interval (absolute clock_time) */
+    clock_time_t i_max_abs;    /**< Maximum interval size in clock ticks (and not in
+                                  number of doublings). This is a cached value of
+                                  Imin << Imax used internally, so that we can
+                                  have direct access to the maximum interval size
+                                  without having to calculate it all the time */
+    struct ctimer ct;          /**< A \ref ctimer used internally */
     mtk_trickle_timer_cb_t cb; /**< Protocol's own callback, invoked at time t
                                within the current interval */
-    void *cb_arg;         /**< Opaque pointer to be used as the argument of the
-                               protocol's callback */
-    uint8_t i_max;        /**< Imax: Max number of doublings */
-    uint8_t k;            /**< k: Redundancy Constant */
-    uint8_t c;            /**< c: Consistency Counter */
+    void* cb_arg;              /**< Opaque pointer to be used as the argument of the
+                                    protocol's callback */
+    uint8_t i_max;             /**< Imax: Max number of doublings */
+    uint8_t k;                 /**< k: Redundancy Constant */
+    uint8_t c;                 /**< c: Consistency Counter */
 };
 /** @} */
 
@@ -414,11 +411,10 @@ struct mtk_trickle_timer {
  * have a different Imax than 'some of them'. See RFC 6206, sec 6.3 for the
  * consequences of this situation
  */
-uint8_t mtk_trickle_timer_config(
-    struct mtk_trickle_timer *tt,
-    clock_time_t i_min,
-    uint8_t i_max,
-    uint8_t k);
+uint8_t mtk_trickle_timer_config(struct mtk_trickle_timer* tt,
+                                 clock_time_t i_min,
+                                 uint8_t i_max,
+                                 uint8_t k);
 
 /**
  * \brief           Start a previously configured trickle timer
@@ -437,10 +433,9 @@ uint8_t mtk_trickle_timer_config(
  * The protocol implementation must configure the trickle timer by calling
  * trickle_timer_config() before calling this function.
  */
-uint8_t mtk_trickle_timer_set(
-    struct mtk_trickle_timer *tt,
-    mtk_trickle_timer_cb_t proto_cb,
-    void *ptr);
+uint8_t mtk_trickle_timer_set(struct mtk_trickle_timer* tt,
+                              mtk_trickle_timer_cb_t proto_cb,
+                              void* ptr);
 
 /**
  * \brief      Stop a running trickle timer.
@@ -456,10 +451,11 @@ uint8_t mtk_trickle_timer_set(
  * to reset a timer manually. Instead, in response to events or inconsistencies,
  * the corresponding functions must be used
  */
-#define mtk_trickle_timer_stop(tt) do { \
-        ctimer_stop(&((tt)->ct)); \
+#define mtk_trickle_timer_stop(tt)                  \
+    do {                                            \
+        ctimer_stop(&((tt)->ct));                   \
         (tt)->i_cur = MTK_TRICKLE_TIMER_IS_STOPPED; \
-} while (0)
+    } while (0)
 
 /**
  * \brief      To be called by the protocol when it hears a consistent
@@ -476,8 +472,7 @@ uint8_t mtk_trickle_timer_set(
  * protocol's implementation MUST use this call to increment the consistency
  * counter instead of directly writing to the structure's field.
  */
-void mtk_trickle_timer_consistency(
-    struct mtk_trickle_timer *tt);
+void mtk_trickle_timer_consistency(struct mtk_trickle_timer* tt);
 
 /**
  * \brief      To be called by the protocol when it hears an inconsistent
@@ -491,8 +486,7 @@ void mtk_trickle_timer_consistency(
  * Therefore, it is important that the protocol calls this function instead of
  * trying to reset the timer by itself.
  */
-void mtk_trickle_timer_inconsistency(
-    struct mtk_trickle_timer *tt);
+void mtk_trickle_timer_inconsistency(struct mtk_trickle_timer* tt);
 
 /**
  * \brief      To be called by the protocol when an external event occurs that

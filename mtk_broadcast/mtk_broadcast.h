@@ -2,7 +2,7 @@
  * MIT License
  *
  * Copyright (c) 2023 LumenRadio AB
- * 
+ *
  * SPDX-License-Identifier: MIT
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -30,39 +30,38 @@
 
 #include <mira.h>
 
-typedef enum {
+typedef enum
+{
     MTK_BROADCAST_SUCCESS = 0,
     MTK_BROADCAST_ERROR_NO_MEMORY,
     MTK_BROADCAST_ERROR_INTERNAL,
     MTK_BROADCAST_ERROR_NOT_INITIALIZED,
-
 
 } mtk_broadcast_status_t;
 
 /**
  * @brief Definition of callback function called on incoming update
  */
-typedef void (*mtk_broadcast_callback_t)(
-    uint32_t data_id,
-    void *data,
-    mira_size_t size,
-    const mira_net_udp_callback_metadata_t *metadata,
-    void *storage);
+typedef void (*mtk_broadcast_callback_t)(uint32_t data_id,
+                                         void* data,
+                                         mira_size_t size,
+                                         const mira_net_udp_callback_metadata_t* metadata,
+                                         void* storage);
 
 /**
  * @brief Initialize the broadcast backend. Shall be called before mtk_broadcast_register()
- * 
+ *
  * @param broadcast_addr    The link-local multicast address used for broadcast.
- * Format of the link-local multicast address should be as specified in 
- * [Mira documentation](https://docs.lumenrad.io/miraos/2.8.1/api/common/net/mira_net_udp.html#mira_net_udp_multicast_group_join)
+ * Format of the link-local multicast address should be as specified in
+ * [Mira
+ * documentation](https://docs.lumenrad.io/miraos/2.8.1/api/common/net/mira_net_udp.html#mira_net_udp_multicast_group_join)
  * @param broadcast_udp_port The udp port to send and receive broadcast packets on.
- * @return mtk_broadcast_status_t 
+ * @return mtk_broadcast_status_t
  * @retval MTK_BROADCAST_SUCCESS
  * @retval MTK_BROADCAST_ERROR_INTERNAL, internal error in worker.
  */
-mtk_broadcast_status_t mtk_broadcast_init(
-    mira_net_address_t *broadcast_addr,
-    uint16_t broadcast_udp_port);
+mtk_broadcast_status_t mtk_broadcast_init(mira_net_address_t* broadcast_addr,
+                                          uint16_t broadcast_udp_port);
 
 /**
  * @brief Register a new data set to distribute over the network
@@ -79,12 +78,11 @@ mtk_broadcast_status_t mtk_broadcast_init(
  * @retval MTK_BROADCAST_ERROR_NO_MEMORY, no place for new service context.
  * @retval MTK_BROADCAST_ERROR_INTERNAL, internal error in worker.
  */
-mtk_broadcast_status_t mtk_broadcast_register(
-    uint32_t data_id,
-    void *data,
-    mira_size_t size,
-    mtk_broadcast_callback_t update_handler,
-    void *storage);
+mtk_broadcast_status_t mtk_broadcast_register(uint32_t data_id,
+                                              void* data,
+                                              mira_size_t size,
+                                              mtk_broadcast_callback_t update_handler,
+                                              void* storage);
 
 /**
  * @brief Update the broadcasted data with new content
@@ -98,10 +96,7 @@ mtk_broadcast_status_t mtk_broadcast_register(
  * @retval MTK_BROADCAST_ERROR_NOT_INITIALIZED, no broadcast service with that data_id.
  * @retval MTK_BROADCAST_ERROR_INTERNAL, internal error in worker.
  */
-int mtk_broadcast_update(
-    uint32_t data_id,
-    void *data,
-    mira_size_t size);
+int mtk_broadcast_update(uint32_t data_id, void* data, mira_size_t size);
 
 /**
  * @brief Pause a running broadcast, preventing sending and receiving updates
@@ -113,8 +108,7 @@ int mtk_broadcast_update(
  * @retval MTK_BROADCAST_ERROR_NOT_INITIALIZED, no broadcast service with that data_id.
  * @retval MTK_BROADCAST_ERROR_INTERNAL, internal error in worker.
  */
-int mtk_broadcast_pause(
-    uint32_t data_id);
+int mtk_broadcast_pause(uint32_t data_id);
 
 /**
  * @brief Resume a paused broadcast, preventing sending and receiving updates
@@ -126,7 +120,6 @@ int mtk_broadcast_pause(
  * @retval MTK_BROADCAST_ERROR_NOT_INITIALIZED, no broadcast service with that data_id.
  * @retval MTK_BROADCAST_ERROR_INTERNAL, internal error in worker.
  */
-int mtk_broadcast_resume(
-    uint32_t data_id);
+int mtk_broadcast_resume(uint32_t data_id);
 
 #endif
