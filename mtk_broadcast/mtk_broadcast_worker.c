@@ -39,7 +39,7 @@
 
 #define MTK_INT_BROADCAST_VERSION_INCREMENT 0x10000
 
-#define DEBUG 1
+#define DEBUG 0
 
 #if DEBUG
 #define P_INFO_DS_W(...) printf(__VA_ARGS__)
