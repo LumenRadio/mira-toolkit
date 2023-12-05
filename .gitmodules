@@ -1,0 +1,3 @@
+[submodule ".format-configuration"]
+	path = .format-configuration
+	url = ../format-configuration.git
